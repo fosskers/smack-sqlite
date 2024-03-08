@@ -1,0 +1,7 @@
+[package]
+name = "smack-sqlite"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+gumdrop = "0.8"
