@@ -5,3 +5,9 @@ edition = "2021"
 
 [dependencies]
 gumdrop = "0.8"
+sqlx = { version = "0.7", features = [ "runtime-tokio", "sqlite" ] }
+tokio = { version = "1.36", default-features = false, features = ["macros", "rt-multi-thread", "time"] }
+
+[profile.release]
+lto = true
+strip = true
