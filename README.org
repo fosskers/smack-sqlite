@@ -1,0 +1,53 @@
+#+title: Smacking SQLite
+
+This is a demonstration of writing to an SQLite database concurrently.
+
+* Setup
+
+Open the database file:
+
+#+begin_example
+sqlite3 test.db
+#+end_example
+
+Create a table:
+
+#+begin_example
+create table smack (id INTEGER PRIMARY KEY, exec INTEGER NOT NULL);
+#+end_example
+
+Exit the database.
+
+Now activate SQLite's [[https://www.sqlite.org/wal.html][WAL Mode]], which vastly improves the behaviour of
+concurrent reads and writes:
+
+#+begin_example
+sqlite3 test.db 'PRAGMA journal_mode=WAL;'
+#+end_example
+
+You should see the word =wal= output to the terminal if this was successful. You
+only need to do this once to activate WAL for all future DB connections.
+
+* Running
+
+Build the binary once:
+
+#+begin_example
+cargo build --release
+#+end_example
+
+Prepare two terminals. We're going to run the same program at the same time in
+each terminal. To run the binary:
+
+#+begin_example
+cargo run --release -- --id=???
+#+end_example
+
+In place of the =???=, enter a _different number in each terminal_.
+
+After the two runs finish, there should be 2000 entries in the database. You can
+double-check that with:
+
+#+begin_example
+select count(id) from smack;
+#+end_example
